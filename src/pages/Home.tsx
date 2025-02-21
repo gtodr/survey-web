@@ -14,6 +14,7 @@ const Home: FC = () => {
       <p>Home Page</p>
       <div>
         <Button onClick={handleLogin}>登录</Button>
+        <a href="#">注册</a>
       </div>
     </div>
   )
