@@ -1,0 +1,15 @@
+.container {
+  padding: 24px;
+  width: 1200px;
+  margin: 0 auto; // 使固定宽度的元素在父容器中水平居中
+  display: flex;
+}
+
+.left {
+  width: 120px;
+}
+
+.right {
+  flex: 1;
+  margin-left: 60px;
+}

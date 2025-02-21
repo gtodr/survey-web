@@ -1,6 +1,7 @@
 import React, { useState, FC } from 'react'
-import QuestionCard from '../components/QuestionCard'
+import QuestionCard from '../../components/QuestionCard'
 import styles from './List.module.scss'
+import { useTitle } from 'ahooks'
 
 const rawQuestionLists = [
   {
@@ -38,6 +39,8 @@ const rawQuestionLists = [
 ]
 
 const List: FC = () => {
+  useTitle('UD问卷 - 我的问卷')
+
   const [questionList] = useState(rawQuestionLists)
 
   return (
@@ -54,7 +57,7 @@ const List: FC = () => {
           return <QuestionCard key={_id} {...q} />
         })}
       </div>
-      <div className={styles.footer}>Footer</div>
+      <div className={styles.footer}>List Footer</div>
     </div>
   )
 }
