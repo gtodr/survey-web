@@ -1,7 +1,9 @@
 import React, { useState, FC } from 'react'
 import QuestionCard from '../../components/QuestionCard'
-import styles from './List.module.scss'
+import styles from './common.module.scss'
+import { Typography, Spin, Empty } from 'antd'
 import { useTitle } from 'ahooks'
+import ListSearch from '../../components/ListSearch'
 
 const rawQuestionLists = [
   {
@@ -42,22 +44,26 @@ const List: FC = () => {
   useTitle('UD问卷 - 我的问卷')
 
   const [questionList] = useState(rawQuestionLists)
+  const { Title } = Typography
 
   return (
     <div className={styles.container}>
       <div className={styles.header}>
         <div className={styles.left}>
-          <h3>我的问卷</h3>
+          <Title level={3}>我的问卷</Title>
         </div>
-        <div className={styles.right}>搜索</div>
+        <div className={styles.right}>
+          <ListSearch />
+        </div>
       </div>
       <div className={styles.content}>
-        {questionList.map(q => {
-          const { _id } = q
-          return <QuestionCard key={_id} {...q} />
-        })}
+        {questionList.length > 0 &&
+          questionList.map(q => {
+            const { _id } = q
+            return <QuestionCard key={_id} {...q} />
+          })}
       </div>
-      <div className={styles.footer}>List Footer</div>
+      <div className={styles.footer}>上划加载</div>
     </div>
   )
 }
