@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { Input } from 'antd'
 import type { ChangeEvent } from 'react'
 import { useNavigate, useLocation, useSearchParams } from 'react-router-dom'
@@ -15,18 +15,17 @@ const ListSearch: FC = () => {
     setValue(event.target.value)
   }
 
-  // 获取 url 参数，并设置到 input value
-  //   const [searchParams] = useSearchParams()
-  //   useEffect(() => {
-  //     const curVal = searchParams.get(LIST_SEARCH_PARAM_KEY) || ''
-  //     setValue(curVal)
-  //   }, [searchParams])
+  // 获取 url 参数，并设置到搜索框
+  const [searchParams] = useSearchParams()
+  useEffect(() => {
+    const curVal = searchParams.get(LIST_SEARCH_PARAM_KEY) || ''
+    setValue(curVal)
+  }, [searchParams])
 
   function handleSearch(value: string) {
-    // 跳转页面，增加 url 参数
     nav({
       pathname,
-      search: `${LIST_SEARCH_PARAM_KEY}=${value}`, // 去掉了 page pageSize
+      search: `${LIST_SEARCH_PARAM_KEY}=${value}`,
     })
   }
 
