@@ -7,6 +7,7 @@ import {
   StarOutlined,
   DeleteOutlined,
 } from '@ant-design/icons'
+import { useRequest } from 'ahooks'
 import { createQuestionService } from '../services/question'
 import styles from './ManageLayout.module.scss'
 
@@ -14,17 +15,29 @@ const ManageLayout: FC = () => {
   const nav = useNavigate()
   const { pathname } = useLocation()
 
-  const [loading, setLoading] = useState(false)
-  async function handleCreateClick() {
-    setLoading(true)
-    const data = await createQuestionService()
-    const { id } = data || {}
-    if (id) {
-      nav(`/question/edit/${id}`)
-      message.success('创建成功！')
-    }
-    setLoading(false)
-  }
+  // const [loading, setLoading] = useState(false)
+  // async function handleCreateClick() {
+  //   setLoading(true)
+  //   const data = await createQuestionService()
+  //   const { id } = data || {}
+  //   if (id) {
+  //     nav(`/question/edit/${id}`)
+  //     message.success('创建成功！')
+  //   }
+  //   setLoading(false)
+  // }
+
+  const {
+    loading,
+    // error,
+    run: handleCreateClick,
+  } = useRequest(createQuestionService, {
+    manual: true,
+    onSuccess(result) {
+      nav(`/question/edit/${result.id}`)
+      message.success('创建成功')
+    },
+  })
 
   return (
     <div className={styles.container}>
