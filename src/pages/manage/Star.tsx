@@ -4,39 +4,15 @@ import QuestionCard from '../../components/QuestionCard'
 import styles from './common.module.scss'
 import { Typography, Spin, Empty } from 'antd'
 import ListSearch from '../../components/ListSearch'
+import useLoadQuestionListData from '../../hooks/useLoadQuestionListData'
 
-const rawQuestionLists = [
-  {
-    _id: 'q1',
-    title: '问卷1',
-    isPublished: false,
-    isStar: true,
-    answerCount: 5,
-    createdAt: '2月18 12:34',
-  },
-  {
-    _id: 'q2',
-    title: '问卷2',
-    isPublished: true,
-    isStar: true,
-    answerCount: 5,
-    createdAt: '2月18 12:34',
-  },
-  {
-    _id: 'q3',
-    title: '问卷3',
-    isPublished: false,
-    isStar: true,
-    answerCount: 5,
-    createdAt: '2月18 12:34',
-  },
-]
+const { Title } = Typography
 
 const Star: FC = () => {
   useTitle('星标问卷')
 
-  const [questionList] = useState(rawQuestionLists)
-  const { Title } = Typography
+  const { data = {}, loading } = useLoadQuestionListData({ isStar: true })
+  const { list = [], total = 0 } = data
 
   return (
     <div className={styles.container}>
@@ -49,10 +25,11 @@ const Star: FC = () => {
         </div>
       </div>
       <div className={styles.content}>
-        {questionList.length === 0 ? (
+        {loading && <Spin />}
+        {!loading && list.length === 0 ? (
           <Empty description="暂无数据" />
         ) : (
-          questionList.map(q => {
+          list.map((q: any) => {
             const { _id } = q
             return <QuestionCard key={_id} {...q} />
           })

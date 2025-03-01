@@ -1,38 +1,12 @@
 import React, { FC, useState } from 'react'
 import { useTitle } from 'ahooks'
 import styles from './common.module.scss'
-import { Typography, Table, Empty, Tag, Button, Space, Modal, Popconfirm } from 'antd'
+import { Typography, Table, Empty, Tag, Button, Space, Modal, Popconfirm, Spin } from 'antd'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import ListSearch from '../../components/ListSearch'
+import useLoadQuestionListData from '../../hooks/useLoadQuestionListData'
 
 const { Title } = Typography
-
-const rawQuestionLists = [
-  {
-    _id: 'q1',
-    title: '问卷1',
-    isPublished: false,
-    isStar: true,
-    answerCount: 5,
-    createdAt: '2月18 12:34',
-  },
-  {
-    _id: 'q2',
-    title: '问卷2',
-    isPublished: true,
-    isStar: true,
-    answerCount: 5,
-    createdAt: '2月18 12:34',
-  },
-  {
-    _id: 'q3',
-    title: '问卷3',
-    isPublished: false,
-    isStar: true,
-    answerCount: 5,
-    createdAt: '2月18 12:34',
-  },
-]
 
 const Trash: FC = () => {
   useTitle('回收站')
@@ -51,7 +25,9 @@ const Trash: FC = () => {
     // })
   }
 
-  const [questionList] = useState(rawQuestionLists)
+  const { data = {}, loading } = useLoadQuestionListData({ isDeleted: true })
+  const { list = [], total = 0 } = data
+
   const [selectedIds, setSelectedIds] = useState<string[]>([]) // 记录选中的 id
   const tableColumns = [
     {
@@ -101,10 +77,10 @@ const Trash: FC = () => {
       </div>
       <div style={{ border: '1px solid #e8e8e8' }}>
         <Table
-          dataSource={questionList}
+          dataSource={list}
           columns={tableColumns}
           pagination={false}
-          rowKey={q => q._id}
+          rowKey={(q: any) => q._id} // ???
           rowSelection={{
             type: 'checkbox',
             onChange: selectedRowKeys => {
@@ -128,7 +104,8 @@ const Trash: FC = () => {
           </div>
         </div>
         <div className={styles.content}>
-          {questionList.length === 0 ? <Empty description="暂无数据" /> : TableElem}
+          {loading && <Spin />}
+          {!loading && list.length === 0 ? <Empty description="暂无数据" /> : TableElem}
         </div>
         <div className={styles.footer}>分页</div>
       </div>
