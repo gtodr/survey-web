@@ -96,7 +96,7 @@ const List: FC = () => {
     if (!started || loading) return <Spin />
     if (total === 0) return <Empty description="暂无数据" />
     if (!haveMoreData) return <span>没有更多了...</span>
-    return <span>开始加载下一页</span>
+    return <span>加载下一页</span>
   }, [started, loading, haveMoreData])
 
   return (

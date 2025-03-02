@@ -1,33 +1,53 @@
 import React, { FC, useState } from 'react'
-import { useTitle } from 'ahooks'
+import { useTitle, useRequest } from 'ahooks'
 import styles from './common.module.scss'
-import { Typography, Table, Empty, Tag, Button, Space, Modal, Popconfirm, Spin } from 'antd'
+import { Typography, Table, Empty, Tag, Button, Space, Popconfirm, Spin, message } from 'antd'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import ListSearch from '../../components/ListSearch'
 import useLoadQuestionListData from '../../hooks/useLoadQuestionListData'
 import ListPage from '../../components/ListPage'
+import { updateQuestionService, deleteQuestionsService } from '../../services/question'
 
 const { Title } = Typography
 
 const Trash: FC = () => {
   useTitle('回收站')
 
-  function del() {
-    alert('删除')
+  // 恢复
+  const { run: recover, loading: recoverLoading } = useRequest(
+    async () => {
+      for await (const id of selectedIds) {
+        await updateQuestionService(id, { isDeleted: false })
+      }
+    },
+    {
+      manual: true,
+      debounceWait: 500, // 防抖
+      onSuccess() {
+        message.success('恢复成功')
+        refresh() // 手动刷新列表
+        setSelectedIds([])
+      },
+    }
+  )
 
-    // Modal.confirm({
-    //   title: '确认彻底删除该问卷？',
-    //   icon: <ExclamationCircleOutlined />,
-    //   content: '删除以后不可以找回',
-    //   onOk: () => {
-    //     // 在这里添加删除逻辑
-    //     console.log('需要删除的问卷id：', selectedIds)
-    //   },
-    // })
-  }
+  // 删除
+  const { run: deleteQuestion, loading: deleteLoading } = useRequest(
+    async () => await deleteQuestionsService(selectedIds),
+    {
+      manual: true,
+      onSuccess() {
+        message.success('删除成功')
+        refresh()
+        setSelectedIds([])
+      },
+    }
+  )
 
-  const { data = {}, loading } = useLoadQuestionListData({ isDeleted: true })
+  const { data = {}, loading: initLoading, refresh } = useLoadQuestionListData({ isDeleted: true })
   const { list = [], total = 0 } = data
+
+  const loading = initLoading || deleteLoading || recoverLoading
 
   const [selectedIds, setSelectedIds] = useState<string[]>([]) // 记录选中的 id
   const tableColumns = [
@@ -56,11 +76,7 @@ const Trash: FC = () => {
     <>
       <div style={{ marginBottom: '16px' }}>
         <Space>
-          <Button
-            type="primary"
-            disabled={selectedIds.length === 0}
-            // onClick={recover}
-          >
+          <Button type="primary" disabled={selectedIds.length === 0} onClick={recover}>
             恢复
           </Button>
           <Popconfirm
@@ -68,7 +84,7 @@ const Trash: FC = () => {
             title="确定删除该问卷？"
             okText="确定"
             cancelText="取消"
-            // onConfirm={del}
+            onConfirm={deleteQuestion}
           >
             <Button danger disabled={selectedIds.length === 0}>
               彻底删除
@@ -105,8 +121,18 @@ const Trash: FC = () => {
           </div>
         </div>
         <div className={styles.content}>
-          {loading && <Spin />}
-          {!loading && list.length === 0 ? <Empty description="暂无数据" /> : TableElem}
+          {loading && (
+            <Spin
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                minHeight: '200px',
+              }}
+            />
+          )}
+          {!loading && list.length === 0 && <Empty description="暂无数据" />}
+          {!loading && list.length > 0 && TableElem}
         </div>
         <div className={styles.footer}>
           <ListPage total={total} />
