@@ -4,14 +4,29 @@ import { UserAddOutlined } from '@ant-design/icons'
 import { Link, useNavigate } from 'react-router-dom'
 import { useRequest } from 'ahooks'
 import { LOGIN_PATHNAME } from '../router'
-// import { registerService } from '../services/user'
+import { registerService } from '../services/user'
 import styles from './Register.module.scss'
 
 const { Title } = Typography
 
 const Register: FC = () => {
-  function onFinish(values: any) {
-    console.log(values)
+  const nav = useNavigate()
+  const { run } = useRequest(
+    async values => {
+      const { username, password, nickname } = values
+      await registerService(username, password, nickname)
+    },
+    {
+      manual: true,
+      onSuccess() {
+        message.success('注册成功')
+        nav(LOGIN_PATHNAME) // 跳转到登录页
+      },
+    }
+  )
+
+  const onFinish = (values: any) => {
+    run(values) // 调用 ajax
   }
 
   return (

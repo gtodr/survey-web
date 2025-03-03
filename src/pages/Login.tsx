@@ -4,8 +4,8 @@ import { Typography, Space, Form, Input, Button, Checkbox, message } from 'antd'
 import { UserAddOutlined } from '@ant-design/icons'
 import { useRequest } from 'ahooks'
 import { REGISTER_PATHNAME, MANAGE_INDEX_PATHNAME } from '../router'
-// import { loginService } from '../services/user'
-// import { setToken } from '../utils/user-token'
+import { loginService } from '../services/user'
+import { setToken } from '../utils/user-token'
 import styles from './Login.module.scss'
 import FormItem from 'antd/es/form/FormItem'
 
@@ -41,8 +41,27 @@ const Login: FC = () => {
     form.setFieldsValue({ username, password })
   }, [])
 
+  const { run } = useRequest(
+    async (username: string, password: string) => {
+      const data = await loginService(username, password)
+      return data
+    },
+    {
+      manual: true,
+      onSuccess(result) {
+        const { token = '' } = result
+        setToken(token) // 存储 token
+
+        message.success('登录成功')
+        nav(MANAGE_INDEX_PATHNAME) // 导航到“我的问卷”
+      },
+    }
+  )
+
   function onFinish(values: any) {
     const { username, password, remember } = values || {}
+
+    run(username, password)
 
     if (remember) {
       rememberUser(username, password)
