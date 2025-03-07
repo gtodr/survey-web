@@ -7,7 +7,7 @@ import { REGISTER_PATHNAME, MANAGE_INDEX_PATHNAME } from '../router'
 import { loginService } from '../services/user'
 import { setToken } from '../utils/user-token'
 import styles from './Login.module.scss'
-import FormItem from 'antd/es/form/FormItem'
+// import FormItem from 'antd/es/form/FormItem'
 
 const { Title } = Typography
 
