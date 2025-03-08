@@ -1,0 +1,49 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; // 占满整个视口高度
+    background-color: #f0f2f5;
+}
+
+.content-wrapper {
+    flex: auto; // 自动占据剩余空间
+    padding: 12px 0; // 上下留出12px间距
+}
+
+.content {
+    margin: 0 24px;  // 左右留出24px边距
+    display: flex;
+    height: 100%;
+
+    .left {
+        width: 295px;
+        background-color: #fff;
+        padding: 0 12px;
+    }
+
+    .main {
+        flex: 1; // 自动占据剩余空间
+        position: relative; // 相对定位
+        overflow: hidden; // 超出部分隐藏（外层不滚动）
+
+        .canvas-wrapper {
+            position: absolute;
+            width: 400px;
+            height: 712px;
+            
+            // 使用 transform 居中
+            top: 50%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-50%);
+            
+            overflow: auto; // canvas滚动
+            box-shadow: 0 2px 10px #0000001f;
+        }
+    }
+
+    .right {
+        width: 300px;
+        background-color: #fff;
+        padding: 0 12px;
+    }
+}
