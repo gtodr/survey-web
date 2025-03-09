@@ -8,14 +8,15 @@ function useGetComponentInfo() {
 
   const {
     componentList = [],
-    // selectedId, copiedComponent
+    selectedId,
+    // copiedComponent
   } = components
 
   //   const selectedComponent = componentList.find(c => c.fe_id === selectedId)
 
   return {
     componentList,
-    // selectedId,
+    selectedId,
     // selectedComponent,
     // copiedComponent,
   }

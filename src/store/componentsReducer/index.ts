@@ -1,5 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+// import produce from 'immer'
+// import cloneDeep from 'lodash.clonedeep'
+// import { nanoid } from 'nanoid'
+// import { arrayMove } from '@dnd-kit/sortable'
 import { ComponentPropsType } from '../../components/QuestionComponents'
+// import { getNextSelectedId, insertNewComponent } from './utils'
 
 export type ComponentInfoType = {
   fe_id: string
@@ -11,13 +16,13 @@ export type ComponentInfoType = {
 }
 
 export type ComponentsStateType = {
-  //   selectedId: string
+  selectedId: string
   componentList: Array<ComponentInfoType>
   //   copiedComponent: ComponentInfoType | null
 }
 
 const INIT_STATE: ComponentsStateType = {
-  //   selectedId: '',
+  selectedId: '',
   componentList: [],
   //   copiedComponent: null,
 }
@@ -35,14 +40,30 @@ export const componentsSlice = createSlice({
     // changeSelectedId: produce((draft: ComponentsStateType, action: PayloadAction<string>) => {
     //   draft.selectedId = action.payload
     // }),
+    // 修改 selectedId Redux Toolkit 的 createSlice 已经在内部使用了 Immer
+    changeSelectedId: (state: ComponentsStateType, action: PayloadAction<string>) => {
+      state.selectedId = action.payload
+    },
 
     // // 添加新组件
-    // addComponent: produce(
-    //   (draft: ComponentsStateType, action: PayloadAction<ComponentInfoType>) => {
-    //     const newComponent = action.payload
-    //     insertNewComponent(draft, newComponent)
-    //   }
-    // ),
+    // addComponent: (state: ComponentsStateType, action: PayloadAction<ComponentInfoType>) => {
+    //   const newComponent = action.payload
+    //   insertNewComponent(state, newComponent)
+    // },
+    addComponent: (state: ComponentsStateType, action: PayloadAction<ComponentInfoType>) => {
+      const newComponent = action.payload
+      const { selectedId, componentList } = state
+      const index = componentList.findIndex(c => c.fe_id === selectedId)
+
+      if (index < 0) {
+        // 未选中
+        state.componentList.push(newComponent)
+      } else {
+        state.componentList.splice(index + 1, 0, newComponent)
+      }
+
+      state.selectedId = newComponent.fe_id
+    },
 
     // // 修改组件属性
     // changeComponentProps: produce(
@@ -179,8 +200,8 @@ export const componentsSlice = createSlice({
 
 export const {
   resetComponents,
-  //   changeSelectedId,
-  //   addComponent,
+  changeSelectedId,
+  addComponent,
   //   changeComponentProps,
   //   removeSelectedComponent,
   //   changeComponentHidden,
