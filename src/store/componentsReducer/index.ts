@@ -4,7 +4,10 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 // import { nanoid } from 'nanoid'
 // import { arrayMove } from '@dnd-kit/sortable'
 import { ComponentPropsType } from '../../components/QuestionComponents'
-// import { getNextSelectedId, insertNewComponent } from './utils'
+import {
+  getNextSelectedId,
+  // insertNewComponent
+} from './utils'
 
 export type ComponentInfoType = {
   fe_id: string
@@ -83,16 +86,16 @@ export const componentsSlice = createSlice({
     },
 
     // // 删除选中的组件
-    // removeSelectedComponent: produce((draft: ComponentsStateType) => {
-    //   const { componentList = [], selectedId: removedId } = draft
+    removeSelectedComponent: (state: ComponentsStateType) => {
+      const { componentList = [], selectedId: removedId } = state
 
-    //   // 重新计算 selectedId
-    //   const newSelectedId = getNextSelectedId(removedId, componentList)
-    //   draft.selectedId = newSelectedId
+      // 重新计算 selectedId
+      const newSelectedId = getNextSelectedId(removedId, componentList)
+      state.selectedId = newSelectedId
 
-    //   const index = componentList.findIndex(c => c.fe_id === removedId)
-    //   componentList.splice(index, 1)
-    // }),
+      const index = componentList.findIndex(c => c.fe_id === removedId)
+      componentList.splice(index, 1)
+    },
 
     // // 隐藏/显示 组件
     // changeComponentHidden: produce(
@@ -201,7 +204,7 @@ export const {
   changeSelectedId,
   addComponent,
   changeComponentProps,
-  //   removeSelectedComponent,
+  removeSelectedComponent,
   //   changeComponentHidden,
   //   toggleComponentLocked,
   //   copySelectedComponent,
