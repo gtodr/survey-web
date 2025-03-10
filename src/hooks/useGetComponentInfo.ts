@@ -12,12 +12,12 @@ function useGetComponentInfo() {
     // copiedComponent
   } = components
 
-  //   const selectedComponent = componentList.find(c => c.fe_id === selectedId)
+  const selectedComponent = componentList.find(c => c.fe_id === selectedId)
 
   return {
     componentList,
     selectedId,
-    // selectedComponent,
+    selectedComponent,
     // copiedComponent,
   }
 }

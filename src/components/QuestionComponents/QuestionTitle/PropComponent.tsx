@@ -7,7 +7,7 @@ const PropComponent: FC<QuestionTitlePropsType> = (props: QuestionTitlePropsType
     text,
     level,
     isCenter,
-    // onChange,
+    onChange,
     // disabled
   } = props
   const [form] = Form.useForm()
@@ -20,17 +20,17 @@ const PropComponent: FC<QuestionTitlePropsType> = (props: QuestionTitlePropsType
     })
   }, [text, level, isCenter])
 
-  //   function handleValueChange() {
-  //     if (onChange) {
-  //       onChange(form.getFieldsValue())
-  //     }
-  //   }
+  function handleValueChange() {
+    if (onChange) {
+      onChange(form.getFieldsValue())
+    }
+  }
 
   return (
     <Form
       form={form}
       layout="vertical"
-      //   onValuesChange={handleValueChange}
+      onValuesChange={handleValueChange}
       initialValues={{ text, level, isCenter }}
       //   disabled={disabled}
     >
