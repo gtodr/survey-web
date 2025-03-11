@@ -44,7 +44,7 @@ export default function useLoadQuestionData() {
       resetComponents({
         componentList,
         selectedId,
-        // copiedComponent: null
+        copiedComponent: null,
       })
     )
 

@@ -15,18 +15,23 @@ import { useDispatch } from 'react-redux'
 // import { ActionCreators as UndoActionCreators } from 'redux-undo'
 import {
   removeSelectedComponent,
-  //   changeComponentHidden,
-  //   toggleComponentLocked,
-  //   copySelectedComponent,
-  //   pasteCopiedComponent,
+  changeComponentHidden,
+  toggleComponentLocked,
+  copySelectedComponent,
+  pasteCopiedComponent,
   //   moveComponent,
 } from '../../../store/componentsReducer'
-// import useGetComponentInfo from '../../../hooks/useGetComponentInfo'
+import useGetComponentInfo from '../../../hooks/useGetComponentInfo'
 
 const EditToolbar: FC = () => {
   const dispatch = useDispatch()
-  //   const { selectedId, componentList, selectedComponent, copiedComponent } = useGetComponentInfo()
-  //   const { isLocked } = selectedComponent || {}
+  const {
+    selectedId,
+    // componentList,
+    selectedComponent,
+    copiedComponent,
+  } = useGetComponentInfo()
+  const { isLocked } = selectedComponent || {}
   //   const length = componentList.length
   //   const selectedIndex = componentList.findIndex(c => c.fe_id === selectedId)
   //   const isFirst = selectedIndex <= 0 // 第一个
@@ -38,24 +43,24 @@ const EditToolbar: FC = () => {
   }
 
   // 隐藏组件
-  //   function handleHidden() {
-  //     dispatch(changeComponentHidden({ fe_id: selectedId, isHidden: true }))
-  //   }
+  function handleHidden() {
+    dispatch(changeComponentHidden({ fe_id: selectedId, isHidden: true }))
+  }
 
   // 锁定组件
-  //   function handleLock() {
-  //     dispatch(toggleComponentLocked({ fe_id: selectedId }))
-  //   }
+  function handleLock() {
+    dispatch(toggleComponentLocked({ fe_id: selectedId }))
+  }
 
   // 复制
-  //   function copy() {
-  //     dispatch(copySelectedComponent())
-  //   }
+  function copy() {
+    dispatch(copySelectedComponent())
+  }
 
   // 粘贴
-  //   function paste() {
-  //     dispatch(pasteCopiedComponent())
-  //   }
+  function paste() {
+    dispatch(pasteCopiedComponent())
+  }
 
   // 上移
   //   function moveUp() {
@@ -84,7 +89,7 @@ const EditToolbar: FC = () => {
       <Tooltip title="删除">
         <Button shape="circle" icon={<DeleteOutlined />} onClick={handleDelete}></Button>
       </Tooltip>
-      {/* <Tooltip title="隐藏">
+      <Tooltip title="隐藏">
         <Button shape="circle" icon={<EyeInvisibleOutlined />} onClick={handleHidden}></Button>
       </Tooltip>
       <Tooltip title="锁定">
@@ -106,7 +111,7 @@ const EditToolbar: FC = () => {
           disabled={copiedComponent == null}
         ></Button>
       </Tooltip>
-      <Tooltip title="上移">
+      {/*<Tooltip title="上移">
         <Button shape="circle" icon={<UpOutlined />} onClick={moveUp} disabled={isFirst}></Button>
       </Tooltip>
       <Tooltip title="下移">

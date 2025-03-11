@@ -6,11 +6,7 @@ function useGetComponentInfo() {
   // redux store
   const components = useSelector<StateType>(state => state.components) as ComponentsStateType
 
-  const {
-    componentList = [],
-    selectedId,
-    // copiedComponent
-  } = components
+  const { componentList = [], selectedId, copiedComponent } = components
 
   const selectedComponent = componentList.find(c => c.fe_id === selectedId)
 
@@ -18,7 +14,7 @@ function useGetComponentInfo() {
     componentList,
     selectedId,
     selectedComponent,
-    // copiedComponent,
+    copiedComponent,
   }
 }
 
