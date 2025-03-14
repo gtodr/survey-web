@@ -12,30 +12,25 @@ import {
   RedoOutlined,
 } from '@ant-design/icons'
 import { useDispatch } from 'react-redux'
-// import { ActionCreators as UndoActionCreators } from 'redux-undo'
+import { ActionCreators as UndoActionCreators } from 'redux-undo'
 import {
   removeSelectedComponent,
   changeComponentHidden,
   toggleComponentLocked,
   copySelectedComponent,
   pasteCopiedComponent,
-  //   moveComponent,
+  moveComponent,
 } from '../../../store/componentsReducer'
 import useGetComponentInfo from '../../../hooks/useGetComponentInfo'
 
 const EditToolbar: FC = () => {
   const dispatch = useDispatch()
-  const {
-    selectedId,
-    // componentList,
-    selectedComponent,
-    copiedComponent,
-  } = useGetComponentInfo()
+  const { selectedId, componentList, selectedComponent, copiedComponent } = useGetComponentInfo()
   const { isLocked } = selectedComponent || {}
-  //   const length = componentList.length
-  //   const selectedIndex = componentList.findIndex(c => c.fe_id === selectedId)
-  //   const isFirst = selectedIndex <= 0 // 第一个
-  //   const isLast = selectedIndex + 1 >= length // 最后一个
+  const length = componentList.length
+  const selectedIndex = componentList.findIndex(c => c.fe_id === selectedId)
+  const isFirst = selectedIndex <= 0 // 第一个
+  const isLast = selectedIndex + 1 >= length // 最后一个
 
   // 删除组件
   function handleDelete() {
@@ -63,26 +58,26 @@ const EditToolbar: FC = () => {
   }
 
   // 上移
-  //   function moveUp() {
-  //     if (isFirst) return
-  //     dispatch(moveComponent({ oldIndex: selectedIndex, newIndex: selectedIndex - 1 }))
-  //   }
+  function moveUp() {
+    if (isFirst) return
+    dispatch(moveComponent({ oldIndex: selectedIndex, newIndex: selectedIndex - 1 }))
+  }
 
   // 下移
-  //   function moveDown() {
-  //     if (isLast) return
-  //     dispatch(moveComponent({ oldIndex: selectedIndex, newIndex: selectedIndex + 1 }))
-  //   }
+  function moveDown() {
+    if (isLast) return
+    dispatch(moveComponent({ oldIndex: selectedIndex, newIndex: selectedIndex + 1 }))
+  }
 
   // 撤销
-  //   function undo() {
-  //     dispatch(UndoActionCreators.undo())
-  //   }
+  function undo() {
+    dispatch(UndoActionCreators.undo())
+  }
 
   // 重做
-  //   function redo() {
-  //     dispatch(UndoActionCreators.redo())
-  //   }
+  function redo() {
+    dispatch(UndoActionCreators.redo())
+  }
 
   return (
     <Space>
@@ -111,7 +106,7 @@ const EditToolbar: FC = () => {
           disabled={copiedComponent == null}
         ></Button>
       </Tooltip>
-      {/*<Tooltip title="上移">
+      <Tooltip title="上移">
         <Button shape="circle" icon={<UpOutlined />} onClick={moveUp} disabled={isFirst}></Button>
       </Tooltip>
       <Tooltip title="下移">
@@ -127,7 +122,7 @@ const EditToolbar: FC = () => {
       </Tooltip>
       <Tooltip title="重做">
         <Button shape="circle" icon={<RedoOutlined />} onClick={redo}></Button>
-      </Tooltip> */}
+      </Tooltip>
     </Space>
   )
 }
