@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux'
 import { resetComponents } from '../store/componentsReducer'
 import { getQuestionService } from '../services/question'
 import { useEffect } from 'react'
+import { resetPageInfo } from '../store/pageInfoReducer'
 
 export default function useLoadQuestionData() {
   const { id = '' } = useParams()
@@ -25,10 +26,10 @@ export default function useLoadQuestionData() {
     if (!data) return
 
     const {
-      // title = '',
-      // desc = '',
-      // js = '',
-      // css = '',
+      title = '',
+      desc = '',
+      js = '',
+      css = '',
       // isPublished = false,
       componentList = [],
     } = data
@@ -49,7 +50,15 @@ export default function useLoadQuestionData() {
     )
 
     // 把 pageInfo 存储到 redux store
-    // dispatch(resetPageInfo({ title, desc, js, css, isPublished }))
+    dispatch(
+      resetPageInfo({
+        title,
+        desc,
+        js,
+        css,
+        // isPublished
+      })
+    )
   }, [data])
 
   // 判断 id 变化，执行 ajax 加载问卷数据
