@@ -30,7 +30,7 @@ export default function useLoadQuestionData() {
       desc = '',
       js = '',
       css = '',
-      // isPublished = false,
+      isPublished = false,
       componentList = [],
     } = data
 
@@ -56,7 +56,7 @@ export default function useLoadQuestionData() {
         desc,
         js,
         css,
-        // isPublished
+        isPublished,
       })
     )
   }, [data])
