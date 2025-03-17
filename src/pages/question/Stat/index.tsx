@@ -7,9 +7,9 @@ import useGetPageInfo from '../../../hooks/useGetPageInfo'
 import StatHeader from './StatHeader'
 import ComponentList from './ComponentList'
 import PageStat from './PageStat'
-// import ChartStat from './ChartStat'
+import ChartStat from './ChartStat'
 import styles from './index.module.scss'
-import { Content } from 'antd/es/layout/layout'
+// import { Content } from 'antd/es/layout/layout'
 
 const Stat: FC = () => {
   const nav = useNavigate()
@@ -64,12 +64,12 @@ const Stat: FC = () => {
             setSelectedComponentType={setSelectedComponentType}
           />
         </div>
-        {/*<div className={styles.right}>
+        <div className={styles.right}>
           <ChartStat
             selectedComponentId={selectedComponentId}
             selectedComponentType={selectedComponentType}
           />
-        </div> */}
+        </div>
       </>
     )
   }

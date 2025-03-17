@@ -99,7 +99,6 @@ const StatHeader: FC = () => {
           </Space>
         </div>
         <div className={styles.main}>
-          Link
           {
             // LinkAndQRCodeElem
             genLinkAndQRCodeElem()
