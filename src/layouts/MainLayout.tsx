@@ -24,7 +24,7 @@ const MainLayout: FC = () => {
         </div>
       </Header>
       <Content className={styles.main}>{!waitingUserData && <Outlet />}</Content>
-      <Footer className={styles.footer}>MainLayout footer</Footer>
+      <Footer className={styles.footer}>Footer</Footer>
     </Layout>
   )
 }

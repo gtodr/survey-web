@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useCallback } from 'react'
 import { componentConfGroup, ComponentConfType } from '../../../components/QuestionComponents'
 import { Typography } from 'antd'
 import { addComponent } from '../../../store/componentsReducer'
@@ -12,7 +12,7 @@ function genComponent(c: ComponentConfType) {
   const dispatch = useDispatch()
   const { title, type, Component, defaultProps } = c
 
-  function handlClick() {
+  const handlClick = useCallback(() => {
     dispatch(
       addComponent({
         fe_id: nanoid(),
@@ -21,7 +21,18 @@ function genComponent(c: ComponentConfType) {
         props: defaultProps,
       })
     )
-  }
+  }, [])
+
+  // function handlClick() {
+  //   dispatch(
+  //     addComponent({
+  //       fe_id: nanoid(),
+  //       title,
+  //       type,
+  //       props: defaultProps,
+  //     })
+  //   )
+  // }
 
   return (
     <div key={type} className={styles.wrapper} onClick={handlClick}>

@@ -31,6 +31,8 @@
     "react-scripts": "5.0.1",
     "recharts": "^2.15.1",
     "redux-undo": "^1.1.0",
+    "serve": "^14.2.4",
+    "source-map-explorer": "^2.5.3",
     "typescript": "^4.4.2",
     "web-vitals": "^2.1.0"
   },
@@ -42,7 +44,8 @@
     "lint": " eslint 'src/**/*.+(js|ts|jsx|tsx)' ",
     "format": " prettier --write 'src/**/*.+(js|ts|jsx|tsx)' ",
     "prepare": "husky",
-    "postinstall": "husky"
+    "postinstall": "husky",
+    "analyze": "source-map-explorer 'build/static/js/*.js'"
   },
   "browserslist": {
     "production": [
